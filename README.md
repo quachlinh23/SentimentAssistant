@@ -19,7 +19,7 @@
 ## ⚙️ Kiến trúc hệ thống
 
 ### 📁 Cấu trúc thư mục
-
+<pre> ```
 └── 📁SentimentAssistant
     └── 📁config                                # Cấu hình chung của dự án
         └── __pycache__/                        # Tệp biên dịch Python tự động sinh
@@ -44,11 +44,13 @@
     ├── app.py                                  # File khởi chạy chính của ứng dụng
     ├── README.md                               # Tài liệu mô tả tổng quan, cài đặt và hướng dẫn sử dụng
     └── requirements.txt                        # Danh sách thư viện Python cần cài để chạy ứng dụng
+``` </pre>
 
 ## ⚙️ Luồng xử lý (Processing Flow)
 
 Dưới đây là quy trình xử lý tổng thể của **SentimentAssistant**, từ khi người dùng nhập văn bản đến khi kết quả được hiển thị:
 
+<pre> ```
 [Đầu vào: Câu tiếng Việt]
             ↓ (Preprocessing)
 [Component 1: Tiền xử lý] → Câu đã chuẩn hóa
@@ -58,6 +60,8 @@ Dưới đây là quy trình xử lý tổng thể của **SentimentAssistant**,
 [Component 3: Hợp nhất & xử lý lỗi] Đầu ra dictionary hoặc lỗi
             ↓
 [Core Engine: Lưu & hiển thị]
+``` </pre>
+
 ## Công nghệ sử dụng
 
 |       Thành phần             | Phiên bản      |           Mô tả                    |
@@ -79,7 +83,7 @@ Dưới đây là quy trình xử lý tổng thể của **SentimentAssistant**,
 ## Các bước cài đặt
 ```bash
 # Clone dự án
-git clone https://github.com/yourusername/SentimentAssistant.git
+git clone https://github.com/quachlinh23/SentimentAssistant.git
 cd SentimentAssistant
 
 # Cài đặt thư viện
