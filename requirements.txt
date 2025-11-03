@@ -1,0 +1,6 @@
+streamlit==1.38.0
+torch==2.3.0+cpu
+torchaudio==2.3.0+cpu
+torchvision==0.18.0+cpu
+transformers==4.44.0
+underthesea==6.8.0
