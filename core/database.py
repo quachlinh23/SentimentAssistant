@@ -29,11 +29,10 @@ def save_result(text: str, sentiment: str):
     conn.commit()
     conn.close()
 
-def get_history(limit: int = HISTORY_LIMIT):
+def get_history():
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.execute(
-        "SELECT text, sentiment, timestamp FROM sentiments ORDER BY timestamp DESC LIMIT ?",
-        (limit,)
+        "SELECT text, sentiment, timestamp FROM sentiments ORDER BY timestamp DESC"
     )
     history = cursor.fetchall()
     conn.close()

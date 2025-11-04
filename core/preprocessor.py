@@ -2,17 +2,13 @@
 from underthesea import word_tokenize
 from unidecode import unidecode
 import re
+from config.settings import ABBREVIATIONS
 
-ABBREVIATIONS = {
-    "rat": "rất", "dc": "được", "k": "không", "ko": "không",
-    "hnay": "hôm nay", "t": "tôi", "r": "rồi", "v": "và",
-    "ns": "nói", "sp": "sản phẩm"
-}
 
 def restore_diacritics(text: str) -> str:
     no_diacritic = unidecode(text)
     try:
-        # Tách từ → ghép lại bằng khoảng trắng (KHÔNG DẤU "_")
+        # Tách từ → ghép lại bằng khoảng trắng
         tokens = word_tokenize(no_diacritic)
         return " ".join([token for token, _ in tokens])
     except:
