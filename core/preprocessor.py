@@ -2,7 +2,7 @@
 from underthesea import word_tokenize
 from unidecode import unidecode
 import re
-from config.settings import ABBREVIATIONS
+from config.settings import ABBREVIATIONS, MAX_CHARACTERS
 
 
 def restore_diacritics(text: str) -> str:
@@ -41,7 +41,7 @@ def preprocess_text(text: str) -> str:
     text = re.sub(r'\bquá\s+chứ\b(?=[\s\.,;!\?]|$)', 'quá', text, flags=re.IGNORECASE)
 
     # 6. Giới hạn 50 ký tự
-    if len(text) > 50:
-        text = text[:47] + "..."
+    if len(text) > MAX_CHARACTERS:
+        text = text[:MAX_CHARACTERS - 3] + "..."
 
     return text.strip()

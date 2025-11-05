@@ -1,13 +1,13 @@
 # core/sentiment_model.py
 import streamlit as st
 from transformers import pipeline
+import torch
 from config.settings import (
     MODEL_NAME, 
-    NEUTRAL_DEFAULT_THRESHOLD
+    NEUTRAL_DEFAULT
 )
-import re
-import torch
 
+# --- Tải model và tokenizer với cache ---
 @st.cache_resource
 def load_pipeline():
     device = 0 if torch.cuda.is_available() else -1
@@ -18,6 +18,7 @@ def load_pipeline():
         device=device
     )
 
+# --- Dự đoán cảm xúc ---
 def predict_sentiment(text: str):
     if not text.strip():
         return {"text": text, "sentiment": "NEUTRAL", "score": 0.0}
@@ -28,7 +29,7 @@ def predict_sentiment(text: str):
             label = result['label'].upper()
             score = result['score']
 
-            # --- BƯỚC 1: Dựa vào nhãn model
+            # --- Dựa vào nhãn model ---
             if 'POS' in label or '1' in label:
                 sentiment = "POSITIVE"
             elif 'NEG' in label or '0' in label:
@@ -36,11 +37,11 @@ def predict_sentiment(text: str):
             else:
                 sentiment = "NEUTRAL"
 
-            # --- BƯỚC 2: Nếu độ tin cậy thấp hơn ngưỡng ở setting, chuyển thành NEUTRAL
-            if score < NEUTRAL_DEFAULT_THRESHOLD:
+            # --- Nếu độ tin cậy thấp hơn ngưỡng ở setting, chuyển thành NEUTRAL ---
+            if score < NEUTRAL_DEFAULT:
                 sentiment = "NEUTRAL"
 
-            # --- BƯỚC 3: Trả về kết quả
+            # --- Trả về kết quả ---
             return {
                 "text": text,
                 "sentiment": sentiment,
