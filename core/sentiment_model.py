@@ -20,7 +20,6 @@ def predict_sentiment(text: str):
         result = load_pipeline()([text])[0]
         label = result.get('label', '').upper()
         score = result.get('score', 0.0)
-        used_rule = "model"
 
         # --- Dựa vào điểm trước, nhãn sau ---
         if score <= NEUTRAL_DEFAULT:  
@@ -38,16 +37,13 @@ def predict_sentiment(text: str):
             text_lower = text.lower()
             if any(word in text_lower for word in POSITIVE_WORDS):
                 sentiment = "POSITIVE"
-                used_rule = "dictionary"
             elif any(word in text_lower for word in NEGATIVE_WORDS):
                 sentiment = "NEGATIVE"
-                used_rule = "dictionary"
 
         return {
             "text": text,
             "sentiment": sentiment,
             "score": round(score, 4),
-            "used_rule": used_rule
         }
 
     except Exception as e:

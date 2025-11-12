@@ -24,26 +24,18 @@
 ```
 └── 📁SentimentAssistant
     └── 📁config                                # Cấu hình chung của dự án
-        └── __pycache__/                        # Tệp biên dịch Python tự động sinh
-        ├── __init__.py                         # Khai báo module Python
         ├── settings.py                         # Chứa các thiết lập hệ thống: đường dẫn DB, model, tham số cấu hình
     └── 📁core                                  # Lõi xử lý nghiệp vụ chính (logic chính của ứng dụng)
-        └── 📁__pycache__
-        ├── __init__.py
         ├── database.py                         # Quản lý kết nối và thao tác với cơ sở dữ liệu SQLite (`sentiments.db`)
         ├── preprocessor.py                     # Xử lý văn bản đầu vào: làm sạch, chuẩn hóa, tách từ, loại bỏ ký tự đặc biệt
         ├── sentiment_model.py                  # Tải và chạy mô hình Transformer (như BERT/DistilBERT) để phân loại cảm xúc
     └── 📁data                                  # Lưu trữ dữ liệu nội bộ
         ├── sentiments.db                       # Cơ sở dữ liệu SQLite lưu lịch sử phân tích
     └── 📁ui                                    # Giao diện người dùng
-        └── __pycache__/
-        ├── __init__.py
         ├── streamlit_app.py                     # Giao diện web chính của ứng dụng (Streamlit)
         ├── layout.py                            # Css cho giao diện
         ├── events.py                            # Xử lý sự kiện
     └── 📁utils                                 # Công cụ phụ trợ (helper functions)
-        └── 📁__pycache__                       #  Các hàm tiện ích hỗ trợ
-        ├── __init__.py
         ├── helpers.py                          # Các hàm tiện ích: ghi log, định dạng đầu ra, ánh xạ nhãn cảm xúc
     ├── app.py                                  # File khởi chạy chính của ứng dụng
     ├── README.md                               # Tài liệu mô tả tổng quan, cài đặt và hướng dẫn sử dụng

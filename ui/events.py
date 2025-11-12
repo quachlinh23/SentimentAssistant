@@ -24,7 +24,7 @@ def handel_analysis(user_input : str):
     show_sentiment(sentiment, score)
 
     with st.expander("Xem chi tiết kết quả", expanded=False):
-        st.json({"text": processed, "sentiment": sentiment, "score": score, "used_rule": result.get("used_rule", "")})
+        st.json({"text": processed, "sentiment": sentiment, "score": score})
 
     save_result(processed, sentiment)
 
