@@ -60,15 +60,14 @@ Dưới đây là quy trình xử lý tổng thể của **SentimentAssistant**,
 
 ## Công nghệ sử dụng
 
-| Thành phần                   | Phiên bản      | Mô tả                              |
-| ---------------------------- | -------------- | ---------------------------------- |
-| **Python**                   | 3.10           | Ngôn ngữ chính                     |
-| **Streamlit**                | 1.38.0         | Xây dựng giao diện web             |
-| **PyTorch (CPU)**            | 2.3.0          | Nền tảng deep learning             |
-| **Transformers**             | 4.44.0         | Mô hình ngôn ngữ BERT / DistilBERT |
-| **TorchVision / TorchAudio** | 0.18.0 / 2.3.0 | Hỗ trợ xử lý dữ liệu               |
-| **Underthesea**              | 6.8.0          | Xử lý ngôn ngữ tự nhiên tiếng Việt |
-| **SQLite3**                  | Built-in       | Lưu trữ kết quả cảm xúc            |
+| Thành phần        | Phiên bản | Mô tả                              |
+| ----------------- | --------- | ---------------------------------- |
+| **Python**        | 3.10      | Ngôn ngữ chính                     |
+| **Streamlit**     | 1.38.0    | Xây dựng giao diện web             |
+| **PyTorch (CPU)** | 2.3.0     | Nền tảng deep learning             |
+| **Transformers**  | 4.44.0    | Mô hình ngôn ngữ BERT / DistilBERT |
+| **Underthesea**   | 6.8.0     | Xử lý ngôn ngữ tự nhiên tiếng Việt |
+| **SQLite3**       | Built-in  | Lưu trữ kết quả cảm xúc            |
 
 ## Yêu cầu
 
