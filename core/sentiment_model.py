@@ -1,53 +1,55 @@
 # core/sentiment_model.py
 import streamlit as st
 from transformers import pipeline
-import torch
-from config.settings import (
-    MODEL_NAME, 
-    NEUTRAL_DEFAULT
-)
+from config.settings import MODEL_NAME, NEUTRAL_DEFAULT
 
-# --- Tải model và tokenizer với cache ---
+# --- Từ điển cơ bản ---
+POSITIVE_WORDS = ["vui", "tốt", "tuyệt", "đẹp", "thích", "yêu", "hay"]
+NEGATIVE_WORDS = ["dở", "tệ", "xấu", "buồn", "mệt", "ghét", "không"]
+
 @st.cache_resource
 def load_pipeline():
-    device = 0 if torch.cuda.is_available() else -1
-    return pipeline(
-        "sentiment-analysis", 
-        model=MODEL_NAME, 
-        tokenizer=MODEL_NAME, 
-        device=device
-    )
+    device = 0 if __import__("torch").cuda.is_available() else -1
+    return pipeline("sentiment-analysis", model=MODEL_NAME, device=device)
 
-# --- Dự đoán cảm xúc ---
 def predict_sentiment(text: str):
-    if not text.strip():
+    if not text or len(text.strip()) < 3:
         return {"text": text, "sentiment": "NEUTRAL", "score": 0.0}
 
     try:
-        with st.spinner("Đang phân tích bằng PhoBERT..."):
-            result = load_pipeline()(text)[0]
-            label = result['label'].upper()
-            score = result['score']
+        result = load_pipeline()([text])[0]
+        label = result.get('label', '').upper()
+        score = result.get('score', 0.0)
+        used_rule = "model"
 
-            # --- Dựa vào nhãn model ---
-            if 'POS' in label or '1' in label:
+        # --- Dựa vào điểm trước, nhãn sau ---
+        if score <= NEUTRAL_DEFAULT:  
+            sentiment = "NEUTRAL"
+        else:
+            if 'POS' in label or label.endswith('2'):
                 sentiment = "POSITIVE"
-            elif 'NEG' in label or '0' in label:
+            elif 'NEG' in label or label.endswith('0'):
                 sentiment = "NEGATIVE"
             else:
                 sentiment = "NEUTRAL"
 
-            # --- Nếu độ tin cậy thấp hơn ngưỡng ở setting, chuyển thành NEUTRAL ---
-            if score < NEUTRAL_DEFAULT:
-                sentiment = "NEUTRAL"
+        # --- Nếu model không tự tin, dùng từ điển ---
+        if sentiment == "NEUTRAL":
+            text_lower = text.lower()
+            if any(word in text_lower for word in POSITIVE_WORDS):
+                sentiment = "POSITIVE"
+                used_rule = "dictionary"
+            elif any(word in text_lower for word in NEGATIVE_WORDS):
+                sentiment = "NEGATIVE"
+                used_rule = "dictionary"
 
-            # --- Trả về kết quả ---
-            return {
-                "text": text,
-                "sentiment": sentiment,
-                "score": round(score, 4), # làm tròn đến 4 chữ số thập phân
-            }
+        return {
+            "text": text,
+            "sentiment": sentiment,
+            "score": round(score, 4),
+            "used_rule": used_rule
+        }
 
     except Exception as e:
-        st.error("Lỗi phân tích: " + str(e))
+        st.error(f"Lỗi model: {e}")
         return {"text": text, "sentiment": "NEUTRAL", "score": 0.0}

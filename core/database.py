@@ -3,9 +3,10 @@ import sqlite3
 from datetime import datetime
 from config.settings import DB_PATH
 
-# --- Khởi tạo cơ sở dữ liệu và bảng nếu chưa tồn tại ---
+# === Khởi tạo cơ sở dữ liệu và bảng nếu chưa tồn tại ===
 def init_db():
-    DB_PATH.parent.mkdir(exist_ok=True) # --- Tạo folder data nếu chưa tồn tại ---
+    # === Tạo folder data nếu chưa tồn tại ===
+    DB_PATH.parent.mkdir(exist_ok=True) 
     conn = sqlite3.connect(DB_PATH)
     conn.execute('''
         CREATE TABLE IF NOT EXISTS sentiments (
@@ -18,10 +19,10 @@ def init_db():
     conn.commit()
     conn.close()
     
-# --- Gọi khi module được import ---
+# === Gọi khi module được import ===
 init_db() 
 
-# --- Lưu kết quả phân tích vào DB ---
+# === Lưu kết quả phân tích vào DB ===
 def save_result(text: str, sentiment: str):
     conn = sqlite3.connect(DB_PATH)
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -32,7 +33,7 @@ def save_result(text: str, sentiment: str):
     conn.commit()
     conn.close()
 
-# --- Lấy lịch sử đã phân tích từ database ---
+# === Lấy lịch sử đã phân tích từ database ===
 def get_history():
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.execute(

@@ -1,47 +1,30 @@
 # core/preprocessor.py
-from underthesea import word_tokenize
-from unidecode import unidecode
 import re
-from config.settings import ABBREVIATIONS, MAX_CHARACTERS
+from underthesea import word_tokenize
+from config.settings import ABBREVIATIONS, MIN_CHARACTERS, MAX_CHARACTERS
 
-
-def restore_diacritics(text: str) -> str:
-    no_diacritic = unidecode(text)
-    try:
-        # Tách từ → ghép lại bằng khoảng trắng
-        tokens = word_tokenize(no_diacritic)
-        return " ".join([token for token, _ in tokens])
-    except:
-        return text
-
-def preprocess_text(text: str) -> str:
-    if not text:
-        return ""
-
-    text = text.strip()
-
-    # 1. Dịch không dấu
-    text = restore_diacritics(text)
-
-    # 2. Chữ thường
-    text = text.lower()
-
-    # 3. Thay viết tắt
+# === Tiền xử lý văn bản ===
+# Loại bỏ khoảng trắng thừa 
+# Chuyển chữ hoa thành chữ thường
+# Mở rộng từ viết tắt
+def normalize_text(text: str) -> str:
+    text = text.strip().lower()
     for abbr, full in ABBREVIATIONS.items():
-        text = re.sub(r'\b' + re.escape(abbr) + r'\b', full, text)
+        text = re.sub(rf'\b{abbr}\b', full, text, flags=re.IGNORECASE)
+    return re.sub(r'\s+', ' ', text).strip()
 
-    # 4. Tách từ
+# === Hàm tiền xử lý chính === 
+# Tiền xử lý văn bản đầu vào
+# chuẩn hóa và token hóa thành từ riêng lẻ
+def preprocess_text(text: str) -> str | None:
+    if len(text) < MIN_CHARACTERS:
+        return None
+    if len(text) > MAX_CHARACTERS:
+        text = text[:MAX_CHARACTERS]
+
+    text = normalize_text(text)
     try:
         tokens = word_tokenize(text)
-        text = " ".join([token for token, _ in tokens])
+        return " ".join(tokens)
     except:
-        pass
-
-    # 5. CHỈ XÓA "chứ" KHI DO UNDERTHESEA TỰ THÊM
-    text = re.sub(r'\bquá\s+chứ\b(?=[\s\.,;!\?]|$)', 'quá', text, flags=re.IGNORECASE)
-
-    # 6. Giới hạn 50 ký tự
-    if len(text) > MAX_CHARACTERS:
-        text = text[:MAX_CHARACTERS - 3] + "..."
-
-    return text.strip()
+        return text

@@ -24,12 +24,12 @@ def handel_analysis(user_input : str):
     show_sentiment(sentiment, score)
 
     with st.expander("Xem chi tiết kết quả", expanded=False):
-        st.json({"text": processed, "sentiment": sentiment, "score": score})
+        st.json({"text": processed, "sentiment": sentiment, "score": score, "used_rule": result.get("used_rule", "")})
 
     save_result(processed, sentiment)
 
 def show_history():
-    """Hiển thị lịch sử phân tích"""
+    """ """
     st.markdown("---")
     st.markdown('<h2 class="titleHistory">Lịch sử phân tích gần đây</h2>', unsafe_allow_html=True)
 

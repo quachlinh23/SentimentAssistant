@@ -20,7 +20,7 @@ def run_app():
         label="",
         height=100,
         placeholder="Nhập vào một câu tiếng Việt để phân tích cảm xúc...",
-        label_visibility="collapsed"
+        label_visibility="collapsed",
     )
 
     # === NÚT PHÂN TÍCH  ===
