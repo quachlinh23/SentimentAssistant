@@ -1,6 +1,7 @@
 import streamlit as st
 from config.settings import APP_TITLE, APP_SOLOGAN
 
+# === Giao diện toàn bộ ===
 def css_ui():
     st.markdown("""
     <style>
@@ -115,7 +116,24 @@ def css_ui():
         }
     </style>
     """, unsafe_allow_html=True)
-
+    
+# === Giao cho header ===
 def header_ui():
     st.markdown(f"<h1 class='main-title'>{APP_TITLE}</h1>", unsafe_allow_html=True)
     st.markdown(f"<p class='slogan'>{APP_SOLOGAN}</p>", unsafe_allow_html=True)
+
+# === Giao diện hiển kết quả phân tích ===
+def show_sentiment(sentiment: str, score: float):
+    """Hiển thị cảm xúc với màu sắc theo nhãn"""
+    if sentiment == "POSITIVE":
+        color = "green"
+    elif sentiment == "NEGATIVE":
+        color = "red"
+    else:
+        color = "gray"
+
+    st.markdown(f"""
+        <p style="color:{color}; font-size:20px;">
+            <b>Cảm xúc:</b> {sentiment} | <b>Độ tin cậy:</b> {score:.1%}
+        </p>
+    """, unsafe_allow_html=True)

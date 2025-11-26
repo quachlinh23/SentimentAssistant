@@ -7,11 +7,13 @@ from config.settings import MODEL_NAME, NEUTRAL_DEFAULT
 POSITIVE_WORDS = ["vui", "tốt", "tuyệt", "đẹp", "thích", "yêu", "hay"]
 NEGATIVE_WORDS = ["dở", "tệ", "xấu", "buồn", "mệt", "ghét", "không"]
 
+# --- Tải mô hình phân tích cảm xúc ---
 @st.cache_resource
 def load_pipeline():
     device = 0 if __import__("torch").cuda.is_available() else -1
     return pipeline("sentiment-analysis", model=MODEL_NAME, device=device)
 
+# --- Dự đoán cảm xúc ---
 def predict_sentiment(text: str):
     if not text or len(text.strip()) < 3:
         return {"text": text, "sentiment": "NEUTRAL", "score": 0.0}
@@ -22,7 +24,7 @@ def predict_sentiment(text: str):
         score = result.get('score', 0.0)
 
         # --- Dựa vào điểm trước, nhãn sau ---
-        if score <= NEUTRAL_DEFAULT:  
+        if score < NEUTRAL_DEFAULT:  
             sentiment = "NEUTRAL"
         else:
             if 'POS' in label or label.endswith('2'):

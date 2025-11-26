@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
-from utils.helpers import clean_input, validate_input, show_sentiment
+from utils.helpers import clean_input, validate_input
+from ui.layout import show_sentiment
 from core.preprocessor import preprocess_text
 from core.sentiment_model import predict_sentiment
 from core.database import save_result, get_history
@@ -29,7 +30,6 @@ def handel_analysis(user_input : str):
     save_result(processed, sentiment)
 
 def show_history():
-    """ """
     st.markdown("---")
     st.markdown('<h2 class="titleHistory">Lịch sử phân tích gần đây</h2>', unsafe_allow_html=True)
 
@@ -38,7 +38,7 @@ def show_history():
     if not history:
         st.info("Chưa có dữ liệu lịch sử nào được lưu.")
         return
-
+    
     df = pd.DataFrame(history, columns=["Câu", "Cảm xúc", "Thời gian"])
 
     if "limit" not in st.session_state:
