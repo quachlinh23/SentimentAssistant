@@ -23,18 +23,19 @@ def predict_sentiment(text: str):
         label = result.get('label', '').upper()
         score = result.get('score', 0.0)
 
-        # --- Dựa vào điểm trước, nhãn sau ---
-        if score < NEUTRAL_DEFAULT:  
-            sentiment = "NEUTRAL"
-        else:
-            if 'POS' in label or label.endswith('2'):
-                sentiment = "POSITIVE"
-            elif 'NEG' in label or label.endswith('0'):
-                sentiment = "NEGATIVE"
-            else:
-                sentiment = "NEUTRAL"
+        # --- Mapping nhãn đúng với model sentiment tiếng Việt ---
+        label_map = {
+            "LABEL_0": "NEGATIVE",
+            "LABEL_1": "NEUTRAL",
+            "LABEL_2": "POSITIVE"
+        }
+        sentiment = label_map.get(label, "NEUTRAL")
 
-        # --- Nếu model không tự tin, dùng từ điển ---
+        # --- Nếu score thấp hơn ngưỡng, xem là NEUTRAL ---
+        if score < NEUTRAL_DEFAULT:
+            sentiment = "NEUTRAL"
+
+        # --- Fallback từ điển nếu sentiment vẫn là NEUTRAL ---
         if sentiment == "NEUTRAL":
             text_lower = text.lower()
             if any(word in text_lower for word in POSITIVE_WORDS):
